@@ -1,4 +1,5 @@
-const parser = require('./src/parser')
+import drawAPATable from './src/html-table.js'
+
 /**
  * Class Definition for Journal Tables
  * 
@@ -8,6 +9,7 @@ class JournalTables {
     constructor(){
         // Eventually allow other options
         this.format = 'APA7';
+        this.tableOptions = defaultTableOptions();
     }
 
     /**
@@ -16,9 +18,8 @@ class JournalTables {
      * @return {string} string of html table
      */
     createHTMLTable(tableParameters){
-
-        return parser.parseTableFields(tableParameters)
-
+        const theHTMLString = drawAPATable(tableParameters, this.tableOptions);
+        return theHTMLString;
     }
 
     /**
@@ -33,4 +34,4 @@ class JournalTables {
 
 }
 
-module.exports = JournalTables
+export default JournalTables

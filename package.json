@@ -1,0 +1,25 @@
+{
+  "name": "journaltables",
+  "version": "1.0.0",
+  "description": "JavaScript library to create research quality tables.",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eribean/JournalTables.git"
+  },
+  "keywords": [
+    "APA Tables",
+    "svg"
+  ],
+  "author": "Ryan C. Sanchez",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/eribean/JournalTables/issues"
+  },
+  "homepage": "https://github.com/eribean/JournalTables#readme",
+  "dependencies": {}
+}
