@@ -17,8 +17,9 @@ function drawJTable(tableParameters, tableOptions) {
 
     const jtTitle = createJTTitle(width, tableParameters, tableOptions);
 
-    const style = [tableOptions.jtBorderTop, tableOptions.jtBorderBottom].joint(" ");
-    const jtTable = `<table id='${tableParameters.jtTableId}' style='${style}'>`;
+    const style = [tableOptions.jtBorderTop, tableOptions.jtBorderBottom,
+                   "border-collapse: collapse;"].join(" ");
+    const jtTable = `<table id="${tableOptions.jtTableId}" style="${style}">`;
 
     // Assign Groups if applicable
     let jtGroups = '';
@@ -52,15 +53,15 @@ function drawJTable(tableParameters, tableOptions) {
  * @return {string} Beginning HTML Header
  */
 function createJTTitle(width, tableParameters, tableOptions) {
-    const theTitle = parseTableFields(tableParameters.tableTitle);
-    const tableNumber = tableParameters.tableNumber;
+    const theTitle = parseTableFields(tableParameters.TableTitle);
+    const tableNumber = tableParameters.TableNumber;
 
     const style = [tableOptions.jtTitle, tableOptions.jtFont, 
-        `width: ${width}px;`, `font-size: ${tableParameters.FontSize}pt`].join(' ');
+        `width: ${width}px;`, `font-size: ${tableParameters.FontSize}pt;`].join(' ');
 
     const jtLabel =
-        `<div id=${tableOptions.jtDivId} class='${style}' data-width=${width}>
-            <p style="${tableOptions.jtBold} margin-bottom: 0.5rem">Table ${tableNumber}</p>
+        `<div id="${tableOptions.jtDivId}" style="${style}" data-width=${width}>
+            <p style="${tableOptions.jtBold + "margin-bottom: 0.5rem"}">Table ${tableNumber}</p>
             <p style="${tableOptions.jtEmphasis}">${theTitle}</p>`;
 
     return jtLabel;
@@ -117,7 +118,7 @@ function createJTGroupHeader(width, tableParameters, tableOptions,
     // Create the Group Header
     const groupStyle = [tableOptions.jtHeaderHeight, "vertical-align: bottom;"].join(" ");
     const tableGroupStyle = [tableOptions.jtCenterAlign, tableOptions.jtBorderBottom].join(" ");
-    const jtGroups = `<tr style='${groupStyle}'>` +
+    const jtGroups = `<tr style="${groupStyle}">` +
         tableParameters.Groups
             .map((group, ndx) => {
                 let tableData = groupSpacer[ndx];
@@ -156,8 +157,8 @@ function createJTHeader(tableParameters, tableOptions, headerSpacer) {
         tableOptions.jtBorderBottom].join(" ");
 
     const jtHeader =
-        `<tr style='${style}'>` +
-        headerData.map((header, ndx) => {
+        `<tr style="${style}">` +
+        tableParameters.Headers.map((header, ndx) => {
             let classList = '';
             headerValue = '';
 
@@ -172,7 +173,7 @@ function createJTHeader(tableParameters, tableOptions, headerSpacer) {
             headerValue = parseTableFields(headerValue);
 
             return headerSpacer[ndx] +
-                `<td style="width: ${colWidth[ndx]}px;"><div class="${classList}">${headerValue}</div></td>`;
+                `<td style="width: ${tableParameters.ColumnWidths[ndx]}px;"><div class="${classList}">${headerValue}</div></td>`;
         })
             .join('') + '</tr>';
 
@@ -188,14 +189,14 @@ function createJTHeader(tableParameters, tableOptions, headerSpacer) {
  * @return {String} HTML String of table data
  */
 function createJTData(tableParameters, tableOptions, dataSpacer) {
-    const tableData = tableParameters.tableData;
-    const tableDataStyles = tableParameters.styles.tableData;
+    const tableData = tableParameters.Data;
+    const tableDataStyles = tableParameters.Style.Data;
 
-    let rowValue;
+    let rowValue, classList;
 
     // Assign the Table Data
     const jtData = tableData.map((tableRow, row) => {
-        return `<tr style='${tableOptions.RowHeight}''>` +
+        return `<tr style="${tableOptions.jtRowHeight}">` +
             tableRow.map((tableData, col) => {
                 try {
                     classList = tableDataStyles[row][col];
@@ -229,8 +230,9 @@ function createJTFooter(tableParameters, tableOptions) {
         theFooter = `<em>Note.</em> ${theFooter}`;
     }
     const style = [tableOptions.Font, tableOptions.jtFooterLineHeight, 
-                   String(tableParameters.FontSize - 2) + 'pt'].join(" ")
-    const jtFooter = `<div style = '${style}'>${theFooter}</div>`;
+        `font-size: ${tableParameters.FontSize-2}pt;`].join(" ")
+
+    const jtFooter = `<div style="${style}">${theFooter}</div>`;
 
     return jtFooter;
 }
