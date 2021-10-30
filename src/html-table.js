@@ -18,13 +18,13 @@ function drawJTable(tableParameters, tableOptions) {
     const jtTitle = createJTTitle(width, tableParameters, tableOptions);
 
     const style = [tableOptions.jtBorderTop, tableOptions.jtBorderBottom,
-                   "border-collapse: collapse;"].join(" ");
+        "border-collapse: collapse;"].join(" ");
     const jtTable = `<table id="${tableOptions.jtTableId}" style="${style}">`;
 
     // Assign Groups if applicable
     let jtGroups = '';
     if (tableParameters.hasOwnProperty('Groups') && tableParameters.Groups.length > 0) {
-        [jtGroups, width, headerSpacer, groupSpacer, dataSpacer] = 
+        [jtGroups, width, headerSpacer, groupSpacer, dataSpacer] =
             createJTGroupHeader(width, tableParameters, tableOptions);
     }
 
@@ -56,8 +56,8 @@ function createJTTitle(width, tableParameters, tableOptions) {
     const theTitle = parseTableFields(tableParameters.TableTitle);
     const tableNumber = tableParameters.TableNumber;
 
-    const style = [tableOptions.jtTitle, tableOptions.jtFont, 
-        `width: ${width}px;`, `font-size: ${tableParameters.FontSize}pt;`].join(' ');
+    const style = [tableOptions.jtTitle, tableOptions.jtFont,
+    `width: ${width}px;`, `font-size: ${tableParameters.FontSize}pt;`].join(' ');
 
     const jtLabel =
         `<div id="${tableOptions.jtDivId}" style="${style}" data-width=${width}>
@@ -152,8 +152,8 @@ function createJTGroupHeader(width, tableParameters, tableOptions,
 function createJTHeader(tableParameters, tableOptions, headerSpacer) {
     let headerValue, styleList;
 
-    const style = [tableOptions.jtHeaderHeight, 
-        tableOptions.jtBorderBottom].join(" ");
+    const style = [tableOptions.jtHeaderHeight,
+    tableOptions.jtBorderBottom].join(" ");
 
     const jtHeader =
         `<tr style="${style}">` +
@@ -218,8 +218,8 @@ function createJTFooter(tableParameters, tableOptions) {
     if (tableParameters.Footer.length > 0) {
         theFooter = `<em>Note.</em> ${theFooter}`;
     }
-    const style = [tableOptions.Font, tableOptions.jtFooterLineHeight, 
-        `font-size: ${tableParameters.FontSize-2}pt;`].join(" ")
+    const style = [tableOptions.Font, tableOptions.jtFooterLineHeight,
+    `font-size: ${tableParameters.FontSize - 2}pt;`].join(" ")
 
     const jtFooter = `<div style="${style}">${theFooter}</div>`;
 
@@ -233,10 +233,10 @@ function createJTFooter(tableParameters, tableOptions) {
  * @param {Array} theStyle the journal table styles
  * @return {String} the inline css string associated with that style
  */
-function cellStyleParser(theStyle, tableOptions){
+function cellStyleParser(theStyle, tableOptions) {
     let styleString = "";
-    
-    if(theStyle.length){
+
+    if (theStyle.length) {
         styleString = theStyle.map(localStyle => {
             return tableOptions[localStyle];
         }).join(" ")
