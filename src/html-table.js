@@ -79,7 +79,6 @@ function createJTTitle(width, tableParameters, tableOptions) {
 function createJTGroupHeader(width, tableParameters, tableOptions,
     headerSpacer, groupSpacer, dataSpacer) {
 
-
     let spacerWidth = tableParameters.hasOwnProperty('SpacerWidth')
         ? tableParameters.SpacerWidth : 30;
 
@@ -151,7 +150,7 @@ function createJTGroupHeader(width, tableParameters, tableOptions,
  * @return {String} HTML String off Journal Table Header
  */
 function createJTHeader(tableParameters, tableOptions, headerSpacer) {
-    let headerValue;
+    let headerValue, styleList;
 
     const style = [tableOptions.jtHeaderHeight, 
         tableOptions.jtBorderBottom].join(" ");
@@ -159,23 +158,16 @@ function createJTHeader(tableParameters, tableOptions, headerSpacer) {
     const jtHeader =
         `<tr style="${style}">` +
         tableParameters.Headers.map((header, ndx) => {
-            let classList = '';
+            styleList = cellStyleParser(tableParameters.Style.Headers[ndx], tableOptions);
             headerValue = '';
-
-            try {
-                classList = headerStyles[ndx];
-            } catch {
-                classList = '';
-            }
 
             if (header !== null) headerValue = header;
 
             headerValue = parseTableFields(headerValue);
 
             return headerSpacer[ndx] +
-                `<td style="width: ${tableParameters.ColumnWidths[ndx]}px;"><div class="${classList}">${headerValue}</div></td>`;
-        })
-            .join('') + '</tr>';
+                `<td style="width: ${tableParameters.ColumnWidths[ndx]}px;"><div style='${styleList}'>${headerValue}</div></td>`;
+        }).join('') + '</tr>';
 
     return jtHeader;
 }
@@ -192,23 +184,20 @@ function createJTData(tableParameters, tableOptions, dataSpacer) {
     const tableData = tableParameters.Data;
     const tableDataStyles = tableParameters.Style.Data;
 
-    let rowValue, classList;
+    let rowValue, styleList;
 
     // Assign the Table Data
     const jtData = tableData.map((tableRow, row) => {
         return `<tr style="${tableOptions.jtRowHeight}">` +
             tableRow.map((tableData, col) => {
-                try {
-                    classList = tableDataStyles[row][col];
-                } catch {
-                    classList = ''
-                }
+                styleList = cellStyleParser(tableDataStyles[row][col], tableOptions);
                 rowValue = '';
+
                 if (tableData !== null) rowValue = tableData;
                 rowValue = parseTableFields(rowValue);
 
                 return dataSpacer[col] +
-                    `<td><div class="${classList}">${rowValue}</div></td>`;
+                    `<td><div style="${styleList}">${rowValue}</div></td>`;
             }).join('') + '</tr>'
     }).join('');
 
@@ -235,6 +224,25 @@ function createJTFooter(tableParameters, tableOptions) {
     const jtFooter = `<div style="${style}">${theFooter}</div>`;
 
     return jtFooter;
+}
+
+
+/**
+ * Parses Cells applied to individual cells
+ * 
+ * @param {Array} theStyle the journal table styles
+ * @return {String} the inline css string associated with that style
+ */
+function cellStyleParser(theStyle, tableOptions){
+    let styleString = "";
+    
+    if(theStyle.length){
+        styleString = theStyle.map(localStyle => {
+            return tableOptions[localStyle];
+        }).join(" ")
+    }
+
+    return styleString
 }
 
 export default drawJTable
