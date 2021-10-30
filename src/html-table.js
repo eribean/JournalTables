@@ -218,7 +218,7 @@ function createJTFooter(tableParameters, tableOptions) {
     if (tableParameters.Footer.length > 0) {
         theFooter = `<em>Note.</em> ${theFooter}`;
     }
-    const style = [tableOptions.Font, tableOptions.jtFooterLineHeight,
+    const style = [tableOptions.jtFont, tableOptions.jtFooterLineHeight,
     `font-size: ${tableParameters.FontSize - 2}pt;`].join(" ");
 
     const jtFooter = `<div style="${style}">${theFooter}</div>`;
@@ -245,4 +245,10 @@ function cellStyleParser(theStyle, tableOptions) {
     return styleString
 }
 
-export default drawJTable
+export { 
+    drawJTable as default,
+    createJTTitle,
+    createJTData,
+    createJTFooter, 
+    cellStyleParser,
+};
