@@ -1,11 +1,20 @@
 {
   "name": "journaltables",
   "version": "1.0.0",
-  "description": "JavaScript library to create research quality tables.",
-  "main": "index.mjs",
+  "description": "Node package to create research quality tables.",
+  "main": "index.js",
   "type": "module",
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
+  "babel": {
+    "presets": ["@babel/preset-env"]
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -21,5 +30,10 @@
     "url": "https://github.com/eribean/JournalTables/issues"
   },
   "homepage": "https://github.com/eribean/JournalTables#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.0",
+    "babel-jest": "^27.3.1",
+    "jest": "^27.3.1"
+  }
 }

@@ -198,7 +198,7 @@ function createJTData(tableParameters, tableOptions, dataSpacer) {
 
                 return dataSpacer[col] +
                     `<td><div style="${styleList}">${rowValue}</div></td>`;
-            }).join('') + '</tr>'
+            }).join('') + '</tr>';
     }).join('');
 
     return jtData;
@@ -219,7 +219,7 @@ function createJTFooter(tableParameters, tableOptions) {
         theFooter = `<em>Note.</em> ${theFooter}`;
     }
     const style = [tableOptions.Font, tableOptions.jtFooterLineHeight,
-    `font-size: ${tableParameters.FontSize - 2}pt;`].join(" ")
+    `font-size: ${tableParameters.FontSize - 2}pt;`].join(" ");
 
     const jtFooter = `<div style="${style}">${theFooter}</div>`;
 
@@ -239,7 +239,7 @@ function cellStyleParser(theStyle, tableOptions) {
     if (theStyle.length) {
         styleString = theStyle.map(localStyle => {
             return tableOptions[localStyle];
-        }).join(" ")
+        }).join(" ");
     }
 
     return styleString

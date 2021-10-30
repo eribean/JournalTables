@@ -24,7 +24,6 @@ const defaultTableOptions = {
   jtFooterLineHeight: "line-height: 2;"
 }
 
-
 /**
  * Class Definition for Journal Tables
  * 
@@ -56,7 +55,6 @@ class JournalTables {
   createDOCXTable(tableParameters) {
 
   }
-
 }
 
 export default JournalTables
