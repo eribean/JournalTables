@@ -1,4 +1,4 @@
-name: JournalTables Test
+name: JournalTables-Test
 
 on:
   push:
