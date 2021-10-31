@@ -11,10 +11,13 @@
     }
   },
   "babel": {
-    "presets": ["@babel/preset-env"]
+    "presets": [
+      "@babel/preset-env"
+    ]
   },
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "lint": "eslint"
   },
   "repository": {
     "type": "git",
@@ -34,6 +37,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.16.0",
     "babel-jest": "^27.3.1",
+    "eslint": "^8.1.0",
     "jest": "^27.3.1"
   }
 }

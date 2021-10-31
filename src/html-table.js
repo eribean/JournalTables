@@ -24,8 +24,11 @@ function drawJTable(tableParameters, tableOptions) {
     // Assign Groups if applicable
     let jtGroups = '';
     if (tableParameters.hasOwnProperty('Groups') && tableParameters.Groups.length > 0) {
-        [jtGroups, width, headerSpacer, groupSpacer, dataSpacer] =
-            createJTGroupHeader(width, tableParameters, tableOptions);
+        [width, columnSpans, headerSpacer, groupSpacer, dataSpacer] = 
+            adjustSpacersForGroupHeader(width, tableParameters, headerSpacer, 
+                groupSpacer, dataSpacer);
+        
+        jtGroups = createJTGroupHeader(tableParameters, tableOptions, columnSpans, groupSpacer);
     }
 
     const jtHeader = createJTHeader(tableParameters, tableOptions, headerSpacer);
@@ -68,16 +71,19 @@ function createJTTitle(width, tableParameters, tableOptions) {
 }
 
 /**
- * Formats the Group Header for a split header format if necessary
  * 
  * @param {int} width the total width of the table
  * @param {JSON} tableParameters dictionary of table parameters
- * @param {JSON} tableOptions dictionary of table options
- * @return {string} Empty String or group header
- * @return {int} Updated table width
+ * @param {Array} headerSpacer 
+ * @param {Array} groupSpacer 
+ * @param {Array} dataSpacer 
+ * @return {Array} Array of updated values including 
+ *                 [width, colSpans, headerSpacers, groupSpacer, dataSpacer]
  */
-function createJTGroupHeader(width, tableParameters, tableOptions,
-    headerSpacer, groupSpacer, dataSpacer) {
+function adjustSpacersForGroupHeader(width, tableParameters, headerSpacer,
+    groupSpacer, dataSpacer) {
+
+    let headerValue, groupValue, dataValue, colSpanValue;
 
     let spacerWidth = tableParameters.hasOwnProperty('SpacerWidth')
         ? tableParameters.SpacerWidth : 30;
@@ -90,20 +96,20 @@ function createJTGroupHeader(width, tableParameters, tableOptions,
     width += (spacerWidth * validGroups.length);
 
     let colSpans = tableParameters.Groups.map((group, ndx, arrayReference) => {
-        let headerValue = "";
-        let groupValue = "";
-        let dataValue = "";
-        let returnValue = 1;
+        headerValue = "";
+        groupValue = "";
+        dataValue = "";
+        colSpanValue = 1;
 
         if (validGroups.includes(group)) {
             if (arrayReference.indexOf(group) === ndx) {
-                returnValue = arrayReference.lastIndexOf(group) -
+                colSpanValue = arrayReference.lastIndexOf(group) -
                     arrayReference.indexOf(group) + 1;
                 headerValue = `<td style='width:${spacerWidth}px;'></td>`;
                 groupValue = `<td colspan="1"></td>`;
                 dataValue = "<td></td>";
             } else {
-                returnValue = 0;
+                colSpanValue = 0;
             }
         }
 
@@ -111,19 +117,35 @@ function createJTGroupHeader(width, tableParameters, tableOptions,
         groupSpacer[ndx] = groupValue;
         dataSpacer[ndx] = dataValue;
 
-        return [returnValue, width, headerSpacer, groupSpacer, dataSpacer];
-    })
+        return colSpanValue;
+    });
+
+    return [width, colSpans, headerSpacer, groupSpacer, dataSpacer];
+}
+
+/**
+ * Formats the Group Header for a split header format if necessary
+ * 
+ * @param {JSON} tableParameters dictionary of table parameters
+ * @param {JSON} tableOptions dictionary of table options
+ * @return {string} Empty String or group header
+ * @return {int} Updated table width
+ */
+function createJTGroupHeader(tableParameters, tableOptions, columnSpans, groupSpacer){
+    // Get the Unique Groups (filter out nulls and spaces)
+    let validGroups = [...new Set(tableParameters.Groups)]
+        .filter((x) => { return (x !== "" && x !== null && x !== " ") });
 
     // Create the Group Header
     const groupStyle = [tableOptions.jtHeaderHeight, "vertical-align: bottom;"].join(" ");
     const tableGroupStyle = [tableOptions.jtCenterAlign, tableOptions.jtBorderBottom].join(" ");
+
     const jtGroups = `<tr style="${groupStyle}">` +
         tableParameters.Groups
             .map((group, ndx) => {
                 let tableData = groupSpacer[ndx];
-                let columnSpan = colSpans[ndx];
 
-                if (columnSpan) {
+                if (columnSpans[ndx]) {
                     let theValue = '';
                     let theStyle = '';
 
@@ -132,13 +154,12 @@ function createJTGroupHeader(width, tableParameters, tableOptions,
                         theStyle = tableGroupStyle;
                     }
 
-                    tableData += `<td style="${theStyle}" colspan="${columnSpan}">${theValue}</td>`;
+                    tableData += `<td style="${theStyle}" colspan="${columnSpans[ndx]}">${theValue}</td>`;
                 }
                 return tableData;
-            })
-            .join('') + '</tr>';
+            }).join('') + '</tr>';
 
-    return [jtGroups, width, headerSpacer, groupSpacer, dataSpacer];
+    return jtGroups;
 }
 
 
@@ -166,12 +187,11 @@ function createJTHeader(tableParameters, tableOptions, headerSpacer) {
             headerValue = parseTableFields(headerValue);
 
             return headerSpacer[ndx] +
-                `<td style="width: ${tableParameters.ColumnWidths[ndx]}px;"><div style='${styleList}'>${headerValue}</div></td>`;
+                `<td style="width: ${tableParameters.ColumnWidths[ndx]}px;"><div style="${styleList}">${headerValue}</div></td>`;
         }).join('') + '</tr>';
 
     return jtHeader;
 }
-
 
 /**
  * Creates the Journal Table Formatted Body
@@ -204,7 +224,6 @@ function createJTData(tableParameters, tableOptions, dataSpacer) {
     return jtData;
 }
 
-
 /**
  * Creates the Journal Table Footer
  * 
@@ -226,7 +245,6 @@ function createJTFooter(tableParameters, tableOptions) {
     return jtFooter;
 }
 
-
 /**
  * Parses Cells applied to individual cells
  * 
@@ -245,10 +263,12 @@ function cellStyleParser(theStyle, tableOptions) {
     return styleString
 }
 
-export { 
+export {
     drawJTable as default,
     createJTTitle,
+    createJTGroupHeader,
+    createJTHeader,
     createJTData,
-    createJTFooter, 
+    createJTFooter,
     cellStyleParser,
 };
