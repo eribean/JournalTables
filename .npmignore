@@ -1,0 +1,7 @@
+/.idea
+/*.iml
+/coverage
+/test
+/.eslintcache
+/.git/
+/.gitignore
