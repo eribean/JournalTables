@@ -11,9 +11,9 @@ import parseTableFields from "./parser.js";
 function drawJTable(tableParameters, tableOptions) {
     // Get the Total Width and Default Group Spacers
     let width = tableParameters.ColumnWidths.reduce((x, y) => (x + y)) + 30;
-    const headerSpacer = tableParameters.Headers.map(() => '');
-    const groupSpacer = [...headerSpacer];
-    const dataSpacer = [...headerSpacer];
+    let headerSpacer = tableParameters.Headers.map(() => '');
+    let groupSpacer = [...headerSpacer];
+    let dataSpacer = [...headerSpacer];
 
     const jtTitle = createJTTitle(width, tableParameters, tableOptions);
 
@@ -24,6 +24,8 @@ function drawJTable(tableParameters, tableOptions) {
     // Assign Groups if applicable
     let jtGroups = '';
     if (tableParameters.hasOwnProperty('Groups') && tableParameters.Groups.length > 0) {
+        let columnSpans;
+        
         [width, columnSpans, headerSpacer, groupSpacer, dataSpacer] = 
             adjustSpacersForGroupHeader(width, tableParameters, headerSpacer, 
                 groupSpacer, dataSpacer);

@@ -1,3 +1,6 @@
+import jsonStringNoGroups from "./testData/noGroupData.json"
+import jsonStringWithGroups from "./testData/withGroupData.json"
+
 import drawJTable, {
     createJTTitle,
     adjustSpacersForGroupHeader,
@@ -171,4 +174,64 @@ test("Test Adjusting Fields for Groups", () => {
     expect(result[3]).toMatchObject(expectedGroup);
     expect(result[4]).toMatchObject(expectedData);
 
+});
+
+// Testing Full Chain
+test("Test Full Chain without Groups", () => {
+    const defaultTableOptions = {
+        jtDivId: "jtDiv",
+        jtTableId: "jtTable",
+        jtTitle: "padding: 15px;",
+        jtFont: "font-family: 'Times New Roman', Times, sans-serif;",
+        jtBold: "font-weight: bold;",
+        jtEmphasis: "font-style: italic;",
+        jtUnderline: "text-decoration: underline;",
+        jtLeftAlign: "text-align: left;",
+        jtCenterAlign: "text-align: center;",
+        jtRightAlign: "text-align: right;",
+        jtTabAlign: "text-indent: 1.5em;",
+        jtRowHeight: "height: 30px;",
+        jtHeaderHeight: "height: 35px;",
+        jtBorderTop: "border-top: solid rgba(0, 0, 0, 0.7) 1px;",
+        jtBorderBottom: "border-bottom: solid rgba(0, 0, 0, 0.7) 1px;",
+        jtFooterLineHeight: "line-height: 2;"
+      }
+    
+    let result = drawJTable(jsonStringNoGroups, defaultTableOptions);
+
+    const expected = `<div id="jtDiv" style="padding: 15px; font-family: 'Times New Roman', Times, sans-serif; width: 330px; font-size: undefinedpt;" data-width=330>
+            <p style="font-weight: bold;margin-bottom: 0.5rem">Table 1</p>
+            <p style="font-style: italic;">This is a title</p><table id="jtTable" style="border-top: solid rgba(0, 0, 0, 0.7) 1px; border-bottom: solid rgba(0, 0, 0, 0.7) 1px; border-collapse: collapse;"><tr style="height: 35px; border-bottom: solid rgba(0, 0, 0, 0.7) 1px;"><td style="width: 100px;"><div style="text-align: left;">Header 1</div></td><td style="width: 100px;"><div style="text-decoration: underline; text-align: center;">Mean (SD)</div></td><td style="width: 100px;"><div style="text-align: right;">&eta;<sup>2</sup></div></td></tr><tr style="height: 30px;"><td><div style="text-align: left; font-weight: bold;">Task 1</div></td><td><div style="text-align: right;">12.2 (<strong>3.34</strong>)</div></td><td><div style="text-align: right; font-style: italic;">*.02</div></td></tr><tr style="height: 30px;"><td><div style="text-align: left; font-weight: bold;">Task 2</div></td><td><div style="text-align: right; font-weight: bold;">13.5 (1.24)</div></td><td><div style="text-align: right; font-style: italic;">.13</div></td></tr><tr style="height: 30px;"><td><div style="text-align: left;">Task 3</div></td><td><div style="text-align: right;">11.2 (0.92)</div></td><td><div style="text-align: right;">.22</div></td></tr></table><div style="font-family: 'Times New Roman', Times, sans-serif; line-height: 2; font-size: NaNpt;"><em>Note.</em> This is a note about the table</div></div>`;
+
+    expect(result).toBe(expected);
+    
+});
+
+test("Test Full Chain With Groups", () => {
+    const defaultTableOptions = {
+        jtDivId: "jtDiv",
+        jtTableId: "jtTable",
+        jtTitle: "padding: 15px;",
+        jtFont: "font-family: 'Times New Roman', Times, sans-serif;",
+        jtBold: "font-weight: bold;",
+        jtEmphasis: "font-style: italic;",
+        jtUnderline: "text-decoration: underline;",
+        jtLeftAlign: "text-align: left;",
+        jtCenterAlign: "text-align: center;",
+        jtRightAlign: "text-align: right;",
+        jtTabAlign: "text-indent: 1.5em;",
+        jtRowHeight: "height: 30px;",
+        jtHeaderHeight: "height: 35px;",
+        jtBorderTop: "border-top: solid rgba(0, 0, 0, 0.7) 1px;",
+        jtBorderBottom: "border-bottom: solid rgba(0, 0, 0, 0.7) 1px;",
+        jtFooterLineHeight: "line-height: 2;"
+      }
+    
+    let result = drawJTable(jsonStringWithGroups, defaultTableOptions);
+    const expected = `<div id="jtDiv" style="padding: 15px; font-family: 'Times New Roman', Times, sans-serif; width: 330px; font-size: undefinedpt;" data-width=330>
+            <p style="font-weight: bold;margin-bottom: 0.5rem">Table 1</p>
+            <p style="font-style: italic;">This is a title</p><table id="jtTable" style="border-top: solid rgba(0, 0, 0, 0.7) 1px; border-bottom: solid rgba(0, 0, 0, 0.7) 1px; border-collapse: collapse;"><tr style="height: 35px; vertical-align: bottom;"><td style="" colspan="1"></td><td colspan="1"></td><td style="text-align: center; border-bottom: solid rgba(0, 0, 0, 0.7) 1px;" colspan="2">Cane</td></tr><tr style="height: 35px; border-bottom: solid rgba(0, 0, 0, 0.7) 1px;"><td style="width: 100px;"><div style="text-align: left;">Header 1</div></td><td style='width:30px;'></td><td style="width: 100px;"><div style="text-decoration: underline; text-align: center;">Mean (SD)</div></td><td style="width: 100px;"><div style="text-align: right;">&eta;<sup>2</sup></div></td></tr><tr style="height: 30px;"><td><div style="text-align: left; font-weight: bold;">Task 1</div></td><td></td><td><div style="text-align: right;">12.2 (<strong>3.34</strong>)</div></td><td><div style="text-align: right; font-style: italic;">*.02</div></td></tr><tr style="height: 30px;"><td><div style="text-align: left; font-weight: bold;">Task 2</div></td><td></td><td><div style="text-align: right; font-weight: bold;">13.5 (1.24)</div></td><td><div style="text-align: right; font-style: italic;">.13</div></td></tr><tr style="height: 30px;"><td><div style="text-align: left;">Task 3</div></td><td></td><td><div style="text-align: right;">11.2 (0.92)</div></td><td><div style="text-align: right;">.22</div></td></tr></table><div style="font-family: 'Times New Roman', Times, sans-serif; line-height: 2; font-size: NaNpt;"><em>Note.</em> This is a note about the table</div></div>`;
+
+    expect(result).toBe(expected);
+    
 });
