@@ -266,6 +266,7 @@ function cellStyleParser(theStyle, tableOptions) {
 export {
     drawJTable as default,
     createJTTitle,
+    adjustSpacersForGroupHeader,
     createJTGroupHeader,
     createJTHeader,
     createJTData,

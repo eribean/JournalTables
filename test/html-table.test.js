@@ -1,5 +1,6 @@
 import drawJTable, {
     createJTTitle,
+    adjustSpacersForGroupHeader,
     createJTGroupHeader,
     createJTHeader,
     createJTData,
@@ -117,4 +118,57 @@ test("Test Group Header Data", () => {
 
     expect(createJTGroupHeader(tableParameters, tableOptions, colSpans, dataSpacer))
     .toBe(expected);
+});
+
+// Adjusting Header Values
+test("Test Adjusting Fields for Groups", () => {
+    let width = 400;
+    const tableParameters = {Groups: ["", "Hi", "Bye", "Bye"]};
+    const headerSpacer = ["", "", "", ""];
+    const groupSpacer = ["", "", "", ""];
+    const dataSpacer = ["", "", "", ""];
+
+    // Default Width is 30 with only Two Groups
+    const newWidth = 400 + 60;
+    const colSpans = [1, 1, 2, 0];
+    const expectedHeader = ["", "<td style='width:30px;'></td>", 
+        "<td style='width:30px;'></td>", ""]
+    const expectedGroup = ["", '<td colspan="1"></td>', '<td colspan="1"></td>', ""];
+    const expectedData = ["", "<td></td>", "<td></td>", ""];
+
+    let result = adjustSpacersForGroupHeader(width, tableParameters, headerSpacer, 
+        groupSpacer, dataSpacer);
+
+    expect(result[0]).toBe(newWidth);
+    expect(result[1]).toMatchObject(colSpans);
+    expect(result[2]).toMatchObject(expectedHeader);
+    expect(result[3]).toMatchObject(expectedGroup);
+    expect(result[4]).toMatchObject(expectedData);
+
+});
+
+test("Test Adjusting Fields for Groups", () => {
+    let width = 400;
+    const tableParameters = {Groups: ["", "Hi", "Hi", "Bye"], SpacerWidth: 10};
+    const headerSpacer = ["", "", "", ""];
+    const groupSpacer = ["", "", "", ""];
+    const dataSpacer = ["", "", "", ""];
+
+    // Width is 10 with only Two Groups
+    const newWidth = 400 + 20;
+    const colSpans = [1, 2, 0, 1];
+    const expectedHeader = ["", "<td style='width:10px;'></td>","",  
+        "<td style='width:10px;'></td>"];
+    const expectedGroup = ["", '<td colspan="1"></td>', "", '<td colspan="1"></td>'];
+    const expectedData = ["", "<td></td>", "", "<td></td>"];
+
+    let result = adjustSpacersForGroupHeader(width, tableParameters, headerSpacer, 
+        groupSpacer, dataSpacer);
+
+    expect(result[0]).toBe(newWidth);
+    expect(result[1]).toMatchObject(colSpans);
+    expect(result[2]).toMatchObject(expectedHeader);
+    expect(result[3]).toMatchObject(expectedGroup);
+    expect(result[4]).toMatchObject(expectedData);
+
 });
