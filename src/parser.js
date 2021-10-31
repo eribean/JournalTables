@@ -14,4 +14,4 @@ function parseTableFields(value){
     return returnValue;
 }
 
-module.exports.parseTableFields = parseTableFields
+export default parseTableFields

@@ -1,0 +1,43 @@
+{
+  "name": "journaltables",
+  "version": "1.0.0",
+  "description": "Node package to create research quality tables.",
+  "main": "index.js",
+  "type": "module",
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "scripts": {
+    "test": "jest --coverage",
+    "lint": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eribean/JournalTables.git"
+  },
+  "keywords": [
+    "APA Tables",
+    "svg"
+  ],
+  "author": "Ryan C. Sanchez",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/eribean/JournalTables/issues"
+  },
+  "homepage": "https://github.com/eribean/JournalTables#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.0",
+    "babel-jest": "^27.3.1",
+    "eslint": "^8.1.0",
+    "jest": "^27.3.1"
+  }
+}
